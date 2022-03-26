@@ -1,0 +1,35 @@
+<div class="page-sm">
+
+    <div class="page-sm-content">
+        <div class="trade-pair-page-top"></div>
+
+        <div class="trade-pairs-spinner" *ngIf="!isReady">
+            <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+        </div>
+
+        <ng-container *ngIf="isReady">
+
+          <div *ngFor="let pair of pairs">
+              <trade-pair-form [tradePairTypes]="tradePairTypes"
+                               [accounts]="accounts"
+                               [keyImages]="keyImages"
+                               [sourcePair]="pair"
+                               [close]=isOpened(pair)
+                               (openedOrClosed)=onPairOpenOrClose($event)
+                               (pairUpdated)=onPairUpdate($event)
+                               (pairDeleted)=onPairDelete($event)>
+              </trade-pair-form>
+          </div>
+
+          <trade-pair-form [tradePairTypes]="tradePairTypes"
+                           [accounts]="accounts"
+                           [keyImages]="keyImages"
+                           [sourcePair]="newPair"
+                           [close]=isOpened(newPair)
+                           (openedOrClosed)=onPairOpenOrClose($event)
+                           (pairCreated)=onPairCreate($event)>
+          </trade-pair-form>
+
+        </ng-container>
+    </div>
+</div>

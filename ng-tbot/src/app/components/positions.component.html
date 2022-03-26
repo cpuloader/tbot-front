@@ -1,0 +1,57 @@
+<div class="positions">
+    <mat-progress-spinner *ngIf="!isReady" class="positions-spinner"
+            mode="indeterminate" color="primary">
+    </mat-progress-spinner>
+
+    <ng-container *ngIf="isReady">
+        <div *ngIf="positions.length == 0" class="positions-empty">
+            Позиций нет
+        </div>
+
+        <table mat-table [dataSource]="positions" class="positions-table" [hidden]="positions.length < 1">
+            <ng-container matColumnDef="account">
+                <th mat-header-cell *matHeaderCellDef> Аккаунт </th>
+                <td mat-cell *matCellDef="let position"> <strong>{{position.bacc_name}}</strong> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="pair_type">
+                <th mat-header-cell *matHeaderCellDef> Пара </th>
+                <td mat-cell *matCellDef="let position"> <span>{{position.pair_type.name}}</span>&nbsp;x<span>{{position.leverage}}</span> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="positionAmt">
+                <th mat-header-cell *matHeaderCellDef> Кол-во </th>
+                <td mat-cell *matCellDef="let position"> {{position.positionAmt}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="entryPrice">
+                <th mat-header-cell *matHeaderCellDef> Цена входа </th>
+                <td mat-cell *matCellDef="let position"> {{position.entryPrice}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="marketPrice">
+                <th mat-header-cell *matHeaderCellDef> Текущая цена </th>
+                <td mat-cell *matCellDef="let position"> {{position.markPrice}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="liquidationPrice">
+                <th mat-header-cell *matHeaderCellDef> Ликвидация </th>
+                <td mat-cell *matCellDef="let position"> {{position.liquidationPrice}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unrealizedProfit">
+                <th mat-header-cell *matHeaderCellDef> PnL </th>
+                <td mat-cell *matCellDef="let position" class="position-pnl"> <span [ngClass]="{'position-loss' : position.unrealizedProfit < 0}">{{position.unrealizedProfit}}</span> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="close">
+                <th mat-header-cell *matHeaderCellDef>  </th>
+                <td mat-cell *matCellDef="let position"> <button mat-raised-button [disabled]="isClosing" (click)=closePosition(position)>Закрыть</button> </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+    </ng-container>
+</div>

@@ -1,0 +1,64 @@
+.signal-ignore-btn {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.signal-inline-fields {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.signal-field-full {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.signal-inline-field-half {
+    flex: 0 0 50%;
+}
+
+.signal-inline-field-third {
+    flex: 0 0 33.3%;
+}
+
+.signal-field-title {
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.signal-field-data {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.signal-with-tweet {
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.signal-tweet {
+    position: relative;
+    flex: 0 0 50%;
+}
+
+.signal-tweet-real {
+    position: relative;
+    padding-right: 20px;
+}
+
+.signal-tweet-hidden {
+    height: 150px;
+    padding-top: 50px;
+    text-align: center;
+}
+
+.signal-tweet-btn {
+    margin: auto;
+}
+
+.signal-right {
+    flex: auto;
+}

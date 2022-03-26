@@ -1,0 +1,53 @@
+<div class="emaildata-component">
+    <ng-container *ngIf=isReady>
+        <form [formGroup]="form" novalidate (ngSubmit)="send()">
+            <div class="emaildata-inline-fields">
+                <div class="emaildata-field">
+                    <div class="emaildata-field-inner">
+                        <mat-label></mat-label>
+                        <mat-form-field appearance="fill">
+                            <input matInput formControlName="host" type="test" name="host" placeholder="SMTP хост">
+                            <mat-error *ngIf="form.controls.host.invalid">{{getErrorMessage('host')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="emaildata-field">
+                    <div class="emaildata-field-inner">
+                        <mat-label></mat-label>
+                        <mat-form-field appearance="fill">
+                            <input matInput formControlName="email" type="email" name="email" placeholder="Email">
+                            <mat-error *ngIf="form.controls.email.invalid">{{getErrorMessage('email')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="emaildata-inline-fields">
+                <div class="emaildata-field">
+                    <div class="emaildata-field-inner">
+                        <mat-label></mat-label>
+                        <mat-form-field appearance="fill">
+                            <input matInput formControlName="password" type="password" name="password" autocomplete="off" placeholder="Пароль">
+                            <mat-error *ngIf="form.controls.password.invalid">{{getErrorMessage('password')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="emaildata-field">
+                    <div class="emaildata-field-inner">
+                        <mat-label></mat-label>
+                        <mat-form-field appearance="fill">
+                            <input matInput formControlName="port" type="port" name="port" autocomplete="off" placeholder="Порт">
+                            <mat-error *ngIf="form.controls.port.invalid">{{getErrorMessage('port')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div *ngIf="error" class="hint-warning">{{ error }}</div>
+
+            <div class="form-spacer"></div>
+
+            <button class="float-right" mat-raised-button color="primary" [disabled]="isSending || !form.valid">Отправить</button>
+        </form>
+    </ng-container>
+</div>

@@ -1,0 +1,95 @@
+<div class="signal-with-tweet">
+    <div class="signal-tweet">
+        <div *ngIf="showTweet" class="signal-tweet-real">
+            <ngx-tweet tweetId="{{signal.twit_id}}"></ngx-tweet>
+        </div>
+        <div *ngIf="!showTweet" class="signal-tweet-hidden">
+            <button class="signal-tweet-btn" mat-raised-button (click)=toggleShow()>Показать твит</button>
+        </div>
+    </div>
+    <div class="signal-right">
+        <div class="signal-inline-fields">
+            <div class="signal-inline-field-half">
+                <div class="signal-field-title">Сумма сделки</div>
+                <div class="signal-field-data">{{signal.first_order_quantity}}&nbsp;<span>{{currency}}</span></div>
+            </div>
+            <div class="signal-inline-field-half">
+                <div class="signal-field-title">Тип</div>
+                <div class="signal-field-data">{{ signal.is_long ? 'LONG' : ' SHORT'}}</div>
+            </div>
+        </div>
+        <br/>
+        <div class="signal-inline-fields">
+            <div class="signal-inline-field-half">
+                <div class="signal-field-title">{{ signal.is_long ? 'Цена покупки' : 'Цена продажи'}}</div>
+                <div class="signal-field-data">{{first_market_price}}</div>
+            </div>
+            <div class="signal-inline-field-half">
+                <div class="signal-field-title">{{ signal.is_long ? 'Цена продажи' : 'Цена покупки' }}</div>
+                <div class="signal-field-data">{{close_market_price}}</div>
+            </div>
+        </div>
+        <br/>
+        <div class="signal-inline-fields">
+            <div class="signal-inline-field-half">
+                <div class="signal-field-title">Кредитное плечо</div>
+                <div class="signal-field-data">x{{signal.leverage}}</div>
+            </div>
+            <div class="signal-inline-field-half">
+                <div class="signal-field-title">Триггер</div>
+                <div class="signal-field-data">{{signal.trigger_word}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="signal-inline-fields">
+    <div class="signal-inline-field-third">
+        <div class="signal-field-title">Состояние</div>
+        <div class="signal-field-data">{{state}}</div>
+    </div>
+    <div class="signal-inline-field-third">
+        <div class="signal-field-title">Аккаунт</div>
+        <div class="signal-field-data">{{signal.account_name}}</div>
+    </div>
+    <div class="signal-inline-field-third">
+        <div class="signal-field-title">Результат</div>
+        <div class="signal-field-data" *ngIf="result">{{result}}</div>
+        <div class="signal-field-data" [hidden]="result">----</div>
+    </div>
+</div>
+<br/>
+<div class="signal-inline-fields">
+    <div class="signal-inline-field-third">
+        <div class="signal-field-title">Время создания сигнала</div>
+        <div class="signal-field-data">{{created_at | dateFieldPipe}}</div>
+    </div>
+    <div class="signal-inline-field-third">
+        <div class="signal-field-title">Время закрытия сделки</div>
+        <div class="signal-field-data" *ngIf="signal.closed_at">{{signal.closed_at | dateFieldPipe}}</div>
+        <div class="signal-field-data" [hidden]="signal.closed_at">----</div>
+    </div>
+    <div class="signal-inline-field-third">
+        <div class="signal-field-title">Общая длительность</div>
+        <div class="signal-field-data" *ngIf="duration">{{duration}}</div>
+        <div class="signal-field-data" [hidden]="duration">----</div>
+    </div>
+</div>
+<br/>
+<div class="signal-inline-fields">
+    <div class="signal-inline-field-third">
+        <div class="signal-field-title">Стоп-лосс при покупке (в %)</div>
+        <div class="signal-field-data">{{signal.stop_loss_percent}}</div>
+    </div>
+    <div class="signal-inline-field-third">
+        <div class="signal-field-title">Безубыток при росте (в %)</div>
+        <div class="signal-field-data">{{signal.on_rise_percent}}</div>
+    </div>
+    <div class="signal-inline-field-third">
+        <div class="signal-field-title">Порог закрытия сделки (в %)</div>
+        <div class="signal-field-data">{{signal.trade_stop_percent}}</div>
+    </div>
+</div>
+<br/>
+
+<button *ngIf="(signal.state < 2)" class="signal-ignore-btn float-right" mat-raised-button color="warn" [disabled]="isSending" (click)=resetSignal()>Игнорировать</button>

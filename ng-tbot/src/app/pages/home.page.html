@@ -1,0 +1,63 @@
+<div class="page-sm">
+
+    <div class="page-sm-content home-page">
+
+        <mat-tab-group mat-align-tabs="start">
+            <mat-tab label="Позиции">
+                <positions></positions>
+            </mat-tab>
+
+            <mat-tab label="Сигналы">
+                <mat-progress-spinner *ngIf="!isReady" class="home-page-spinner"
+                        mode="indeterminate" color="primary">
+                </mat-progress-spinner>
+
+                <ng-container *ngIf="isReady">
+                    <div *ngIf="signals.length == 0" class="home-page-empty">
+                        Торгов еще не было
+                    </div>
+
+                    <mat-accordion multi>
+
+                      <mat-expansion-panel *ngFor="let signal of signals">
+                          <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                <span class="home-signal-column1">#{{ signal.id }}</span>
+                                <span class="home-signal-column2">{{ signal.account_name }}</span>
+                                <span class="home-signal-column2">{{ signal.symbol }}</span>
+                                <span class="home-signal-column1">{{ signal.is_long ? 'LONG' : 'SHORT' }}</span>
+                                <span class="home-signal-column2">{{ drawTime(signal) | dateFieldPipe }}</span>
+                                <span class="home-signal-column1">{{ getState(signal) }}</span>
+                              </mat-panel-title>
+                          </mat-expansion-panel-header>
+
+                          <trade-signal [signal]=signal></trade-signal>
+
+                      </mat-expansion-panel>
+
+                    </mat-accordion>
+
+                    <button *ngIf="hasMore" class="home-page-loadmore float-right" mat-raised-button color="primary" [disabled]="isLoading" (click)=loadMore()>Показать еще</button>
+                </ng-container>
+            </mat-tab>
+
+            <mat-tab label="Пропущенные твиты">
+                <mat-progress-spinner *ngIf="!tweetsReady" class="home-page-spinner"
+                        mode="indeterminate" color="primary">
+                </mat-progress-spinner>
+
+                <ng-container *ngIf="tweetsReady">
+                    <div *ngIf="tweets.length == 0" class="home-page-empty">
+                        Твитов еще не было
+                    </div>
+
+                    <div *ngFor="let tweet of tweets">
+                        <tweet-comp [tweet]=tweet></tweet-comp>
+                    </div>
+
+                    <button *ngIf="hasMoreTweets" class="home-page-loadmore float-right" mat-raised-button color="primary" [disabled]="isLoadingTweets" (click)=loadMoreTweets()>Показать еще</button>
+                </ng-container>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

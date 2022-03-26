@@ -1,0 +1,118 @@
+<div class="twit-panel">
+
+    <div class="twit-spinner" *ngIf="!isReady">
+        <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+    </div>
+
+
+    <ng-container *ngIf="isReady">
+        <div [hidden]="showForm">
+            <div *ngIf="account.id > 0" class="twit-acc-keyfields">
+                <div class="twit-acc-keyfield">
+                    <div class="twit-acc-title">API ключ</div>
+                    <div class="twit-acc-data">{{account.api_key_stars}}</div>
+                </div>
+                <div class="twit-acc-keyfield">
+                    <div class="twit-acc-title">API секрет</div>
+                    <div class="twit-acc-data">{{account.api_secret_stars}}</div>
+                </div>
+            </div>
+            <ng-container *ngIf="account.id == -1">
+                <p class="twit-empty">Твиттер аккаунт еще не настроен</p>
+            </ng-container>
+            <div class="twit-send">
+                <button class="float-right" mat-raised-button color="primary" [disabled]="isSending" (click)="toggleForm()">{{(account.id == -1) ? 'Создать' : 'Изменить'}}</button>
+            </div>
+        </div>
+
+        <div [hidden]="!showForm">
+            <form [formGroup]="form" novalidate (ngSubmit)="send()">
+                <div class="twit-inline-fields">
+                    <div class="twit-inline-field twit-inline-field-half">
+                        <div class="twit-inline-field-inner">
+                            <mat-label>API Key</mat-label>
+                            <mat-form-field appearance="fill">
+                                <input matInput formControlName="api_key" type="text" name="api_key" maxlength="100" autocomplete="off">
+                                <mat-error *ngIf="form.controls.api_key.invalid">{{getErrorMessage('api_key')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="twit-inline-field twit-inline-field-half">
+                        <div class="twit-inline-field-inner">
+                            <mat-label>API Secret</mat-label>
+                            <mat-form-field appearance="fill">
+                                <input matInput formControlName="api_secret" type="text" name="api_secret" maxlength="100" autocomplete="off">
+                                <mat-error *ngIf="form.controls.api_secret.invalid">{{getErrorMessage('api_secret')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <div class="twit-inline-field twit-inline-field-full">
+                    <div class="twit-inline-field-inner">
+                        <mat-label>Bearer token</mat-label>
+                        <mat-form-field appearance="fill">
+                            <input matInput formControlName="token" type="text" name="token" maxlength="120" autocomplete="off">
+                            <mat-error *ngIf="form.controls.token.invalid">{{getErrorMessage('token')}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <br/>
+
+                <div class="twit-inline-fields">
+                    <div class="twit-inline-field twit-inline-field-half">
+                        <div class="twit-inline-field-inner">
+                            <mat-label>Access token</mat-label>
+                            <mat-form-field appearance="fill">
+                                <input matInput formControlName="access_token" type="text" name="access_token" maxlength="100" autocomplete="off">
+                                <mat-error *ngIf="form.controls.access_token.invalid">{{getErrorMessage('access_token')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="twit-inline-field twit-inline-field-half">
+                        <div class="twit-inline-field-inner">
+                            <mat-label>Access secret</mat-label>
+                            <mat-form-field appearance="fill">
+                                <input matInput formControlName="access_token_secret" type="text" name="access_token_secret" maxlength="100" autocomplete="off">
+                                <mat-error *ngIf="form.controls.access_token_secret.invalid">{{getErrorMessage('access_token_secret')}}</mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="twit-sending" *ngIf="isSending"><mat-progress-bar mode="buffer"></mat-progress-bar><br/></div>
+                <div class="twit-send">
+                    <button class="float-right" mat-raised-button color="primary" [disabled]="isSending || !form.valid">{{(account.id > 0) ? 'Сохранить' : 'Создать'}}</button>
+                    <button class="float-left" mat-raised-button type="button" [disabled]="isSending" (click)=toggleForm()>Отмена</button>
+                </div>
+            </form>
+        </div>
+        <br/>
+        <br/>
+        <div class="twit-inline-fields">
+            <div class="twit-inline-field twit-inline-field-half">
+                <div class="twit-inline-field-inner">
+                    <p>Аккаунты для отслеживания</p>
+                    <mat-form-field>
+                        <mat-chip-list #personsList aria-label="Persons">
+                            <mat-chip *ngFor="let person of persons" [selectable]="false" [removable]="true" (removed)="remove(person)">
+                                {{person.name}}
+                                <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                            <input #personInput [formControl]="personsControl"
+                                   placeholder="Введите имя аккаунта..."
+                                   [matChipInputFor]="personsList"
+                                   [matChipInputAddOnBlur]="true"
+                                   (matChipInputTokenEnd)="add($event)">
+                        </mat-chip-list>
+                    </mat-form-field>
+                    <br>
+                    <div class="twit-sending" *ngIf="isSendingTP"><mat-progress-bar mode="buffer"></mat-progress-bar><br/></div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</div>

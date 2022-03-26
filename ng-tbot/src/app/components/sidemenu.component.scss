@@ -1,0 +1,41 @@
+.side-menu-inner {
+    position: relative;
+    width: 100%;
+    padding-top: 64px;
+}
+
+.side-menu-inner a {
+    text-decoration: none;
+    color: #000;
+}
+
+.side-menu_list-icon {
+    margin-right: 15px;
+}
+
+.side-menu-item {
+    display: flex;
+}
+
+.mat-list-item {
+    cursor: pointer;
+}
+
+.mat-list-item:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.mat-list-item .selected {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.side-menu-item mat-icon,
+.side-menu-item div {
+    flex: inherit;
+}
+
+.side-menu-item div {
+    display: block;
+    margin-top: 3px;
+    margin-left: 10px;
+}

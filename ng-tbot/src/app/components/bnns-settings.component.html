@@ -1,0 +1,102 @@
+<div class="bnns-settings-component" [hidden]="!apisReceived">
+    <div class="bnns-settings-list">
+        <div class="bnns-settings-acc" *ngFor="let ac of accs">
+            <div class="bnns-settings-acc-data">
+                <div class="bnns-settings-acc-line">
+                    <p class="bnns-settings-acc-name">Алиас</p>
+                    <p class="bnns-settings-acc-str">{{ac.name}}</p>
+                </div>
+                <div class="bnns-settings-acc-line">
+                    <p class="bnns-settings-acc-name">API ключ</p>
+                    <p class="bnns-settings-acc-str">{{ac.bnns_key_stars}}</p>
+                    <p class="bnns-settings-acc-err" [hidden]="ac.testStatus != 2">Ключ недействителен</p>
+                </div>
+                <div class="bnns-settings-acc-line">
+                    <p class="bnns-settings-acc-name">API секрет</p>
+                    <p class="bnns-settings-acc-str">{{ac.bnns_secret_stars}}</p>
+                    <p class="bnns-settings-acc-err" [hidden]="ac.testStatus != 2">Ошибка данных API-ключа</p>
+                </div>
+            </div>
+
+            <div class="bnns-settings-acc-buttons">
+              <div class="bnns-settings-acc-button">
+                  <mat-slide-toggle color="primary" [checked]="ac.is_active" [disabled]="isSwitching" (click)="toggleAcc(ac)">
+                  </mat-slide-toggle>
+              </div>
+              <div class="bnns-settings-acc-button">
+                  <button mat-mini-fab (click)="testAcc(ac)" [style.backgroundColor]="getTestBtnColor(ac)" [disabled]="isTesting">
+                      <mat-icon>{{getBtnIcon(ac)}}</mat-icon>
+                  </button>
+              </div>
+              <div class="bnns-settings-acc-button">
+                  <button mat-mini-fab color="warn" (click)="deleteAcc(ac)" [disabled]="isDeleting">
+                      <mat-icon>delete</mat-icon>
+                  </button>
+              </div>
+            </div>
+
+            <ng-container *ngIf="ac.testStatus == 1 && ac.assets">
+                <div class="bnns-settings-acc-assets" *ngIf="ac.assets.length">
+                    <table mat-table [dataSource]="ac.assets">
+                        <ng-container matColumnDef="currency">
+                            <th mat-header-cell *matHeaderCellDef> Currency </th>
+                            <td mat-cell *matCellDef="let element"> {{element.currency}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="balance">
+                            <th mat-header-cell *matHeaderCellDef> Balance </th>
+                            <td mat-cell *matCellDef="let element"> {{element.balance}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="assetsColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: assetsColumns;"></tr>
+                    </table>
+                </div>
+
+                <div class="bnns-settings-acc-assets-empty" *ngIf="!ac.assets.length">
+                    <p>Нет активов</p>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="bnns-settings-sending" *ngIf="isDeleting || isSwitching"><mat-progress-bar mode="buffer"></mat-progress-bar></div>
+    </div>
+
+    <button class="float-right" mat-button (click)="openForm()">{{formOpened ? 'Hide form' : 'Add new API'}}</button>
+    <br/>
+
+    <div class="bnns-settings-form" [hidden]="!formOpened">
+
+        <p>Enter new API data</p>
+
+        <form [formGroup]="form" novalidate (ngSubmit)="send()" (keydown.enter)="$event.preventDefault()">
+            <div *ngIf="error" class="hint-warning">{{ error }}</div>
+
+            <div class="form-inline-fields">
+                <mat-form-field appearance="fill">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" type="text" name="name" placeholder="Alias name" maxlength="20">
+                    <mat-error *ngIf="form.controls.name.invalid">{{getErrorMessage('name')}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>API Key</mat-label>
+                    <input matInput formControlName="bnns_key" type="text" name="bnns_key" placeholder="API Key" maxlength="100" autocomplete="off">
+                    <mat-error *ngIf="form.controls.bnns_key.invalid">{{getErrorMessage('bnns_key')}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>API Secret</mat-label>
+                    <input matInput formControlName="bnns_secret" type="text" name="api_secret" placeholder="API Secret" maxlength="100" autocomplete="off">
+                    <mat-error *ngIf="form.controls.bnns_secret.invalid">{{getErrorMessage('bnns_secret')}}</mat-error>
+                </mat-form-field>
+            </div>
+            <br/>
+
+            <div class="bnns-settings-sending" *ngIf="isSending"><mat-progress-bar mode="buffer"></mat-progress-bar><br/></div>
+            <div class="form-spacer">
+                <button class="float-right" mat-raised-button color="primary" [disabled]="isSending || !form.valid">Submit</button>
+            </div>
+
+            <br/>
+        </form>
+    </div>
+</div>

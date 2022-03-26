@@ -1,0 +1,26 @@
+<mat-toolbar color="primary" class="mat-elevation-z7">
+    <span class="toolbar-logo"><mat-icon>smart_toy</mat-icon></span>
+    <span class="toolbar-name">Elon says BUY!</span>
+    <span class="toolbar-connection-outer">
+      <span class="toolbar-connection">
+          <div class="connection-status-indicator" [ngStyle]="{ 'background-color': connectionColor, 'color': connectionColor  }"></div>
+      </span>
+    </span>
+    <span class="toolbar-spacer">
+      <span class="toolbar-button toolbar-button-indicator">
+          <button mat-flat-button [style.backgroundColor]="getIndBtnColor()" disableRipple="true">{{getIndBtnText()}}</button>
+      </span>
+      <span class="toolbar-button toolbar-button-switch">
+          <button mat-raised-button [disabled]="isCooling" (click)="switchBot()"><mat-icon>{{getSwitchBtnIcon()}}</mat-icon>&nbsp;{{getSwitchBtnText()}}</button>
+      </span>
+    </span>
+    <span class="toolbar-username">{{ user?.username }}</span>
+    <button mat-icon-button [mat-menu-trigger-for]="menu">
+        <mat-icon>face</mat-icon>
+    </button>
+</mat-toolbar>
+
+<mat-menu x-position="before" #menu="matMenu">
+    <a mat-menu-item [routerLink]="['/logs']">Bot telemetry</a>
+    <button mat-menu-item (click)="logout()">Logout</button>
+</mat-menu>

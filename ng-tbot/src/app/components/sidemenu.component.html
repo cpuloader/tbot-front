@@ -1,0 +1,7 @@
+<div class="side-menu-inner">
+    <mat-list role="list">
+        <mat-list-item role="listitem" *ngFor="let el of elements" (click)="selectItem(el)">
+            <div class="side-menu-item"><mat-icon>{{el.icon}}</mat-icon><div>{{el.name}}</div></div>
+        </mat-list-item>
+    </mat-list>
+</div>

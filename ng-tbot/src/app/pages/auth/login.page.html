@@ -1,0 +1,31 @@
+<div class="login-component">
+    <ng-container *ngIf=isReady>
+        <mat-card class="form-card">
+            <form [formGroup]="form" novalidate (ngSubmit)="login()">
+                <div class="login-form-field">
+                    <mat-label></mat-label>
+                    <mat-form-field>
+                        <input matInput formControlName="email" type="email" name="email" placeholder="Email">
+                        <mat-error *ngIf="form.controls.email.invalid">{{getErrorMessage('email')}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <br>
+
+                <div class="login-form-field">
+                    <mat-label></mat-label>
+                    <mat-form-field>
+                        <input matInput formControlName="password" type="password" name="password" autocomplete="off" placeholder="Пароль">
+                        <mat-error *ngIf="form.controls.password.invalid">{{getErrorMessage('password')}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <br>
+                <div *ngIf="error" class="hint-warning">{{ error }}</div>
+
+                <div class="form-spacer"></div>
+
+                <a class="link-before-button" [routerLink]="['/auth/forgot']">Забыли пароль?</a>
+                <button class="float-right" mat-raised-button color="primary" [disabled]="isSending || !form.valid">Войти</button>
+            </form>
+        </mat-card>
+    </ng-container>
+</div>

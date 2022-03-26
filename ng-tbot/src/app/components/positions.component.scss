@@ -1,0 +1,35 @@
+.positions {
+     position: relative;
+     display: block;
+}
+
+.position {
+     position: relative;
+     display: block;
+}
+
+.positions-spinner {
+    width: 20%;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.positions-empty {
+    margin-top: 50px;
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
+
+.positions-table {
+    position: relative;
+    width: 100%;
+}
+
+.position-pnl {
+    color: rgb(26, 213, 0);
+}
+
+.position-loss {
+    color: red;
+}

@@ -1,0 +1,42 @@
+<div class="user-settings-form">
+    <form role="form" (ngSubmit)="submit()" #passForm="ngForm" (keydown.enter)="$event.preventDefault()">
+        <div *ngIf="error && error.error" class="hint-warning">{{ error.error }}</div>
+        <div *ngIf="error && error.non_field_errors" class="hint-warning">{{ error.non_field_errors[0]}}</div>
+
+        <div class="form-inline-fields">
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" name="email" placeholder="Email" [(ngModel)]="user.email" required>
+                <mat-hint *ngIf="error && error.email" class="hint-warning">{{ error.email[0] }}</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" name="name" placeholder="Your nickname" [(ngModel)]="user.username" required>
+                <mat-hint *ngIf="error && error.name" class="hint-warning">{{ error.name[0] }}</mat-hint>
+            </mat-form-field>
+        </div>
+        <br>
+
+        <div class="form-inline-fields">
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input matInput type="password" name="password" placeholder="Password" [(ngModel)]="user.password">
+                <mat-hint *ngIf="error && error.password" class="hint-warning">{{ error.password[0] }}</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Confirm password</mat-label>
+                <input matInput type="password" name="confirm_password" placeholder="Confirm password" [(ngModel)]="user.confirm_password">
+            </mat-form-field>
+        </div>
+        <br>
+
+        <div class="form-spacer">
+            <button class="float-right" mat-raised-button color="primary"
+                    [disabled]="isSending || !passForm.form.valid || !(user.password === user.confirm_password)">Submit</button>
+        </div>
+
+        <br>
+    </form>
+</div>

@@ -1,0 +1,12 @@
+<div class="tweet-component">
+    <div *ngIf="showTweet" class="tweet-component-obj">
+        <ngx-tweet tweetId="{{tweet.tw_id}}"></ngx-tweet>
+    </div>
+    <div *ngIf="!showTweet" class="tweet-component-hidden">
+        <div class="tweet-meta">Автор твита:&nbsp;<span class="tweet-text">{{tweet.author}}</span></div>
+        <div class="tweet-meta">Создан:&nbsp;<span class="tweet-date">{{tweet.created_at | dateFieldPipe}}</span></div>
+        <div class="tweet-meta">Текст:&nbsp;<span class="tweet-text">{{tweet.text}}</span></div>
+        <button class="tweet-btn float-left" mat-raised-button (click)=toggleShow()>Показать твит</button>
+        <div class="clear-float"><div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+.form-spacer {
+    display: block;
+    width: 100%;
+    height: 20px;
+}
+
+.emaildata-inline-fields {
+    display: flex;
+    width: 100%;
+}
+
+.emaildata-field {
+    flex: 0 0 50%;
+}
+
+.emaildata-field .mat-form-field {
+    width: 100%;
+}
+
+.emaildata-field {
+    .emaildata-field-inner {
+        padding-right: 20px;
+    }
+}
+
+.emaildata-field:last-child {
+    .emaildata-field-inner {
+        padding-right: 0;
+    }
+}

@@ -1,0 +1,69 @@
+.twit-spinner {
+    width: 100%;
+    padding: 100px 0;
+
+    .mat-progress-spinner {
+        margin: auto;
+    }
+}
+
+.twit-inline-fields {
+    display: flex;
+}
+
+.twit-inline-field {
+    flex: auto;
+
+    .twit-inline-field-inner {
+        padding-right: 20px;
+    }
+}
+
+.twit-inline-field:last-child {
+    .twit-inline-field-inner {
+        padding-right: 0;
+    }
+}
+
+.twit-inline-field-half {
+    flex: 0 0 50%;
+}
+
+.twit-inline-field-third {
+    flex: 0 0 33.3%;
+}
+
+.twit-inline-field .mat-form-field {
+    width: 100%;
+
+}
+
+.twit-full-field .mat-form-field {
+    width: 100%;
+}
+
+.twit-empty {
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
+
+.twit-acc-keyfields {
+    position: relative;
+    display: flex;
+}
+
+.twit-acc-keyfield {
+    flex: 0 0 30%;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.twit-acc-title {
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.twit-sending {
+    position: relative;
+}

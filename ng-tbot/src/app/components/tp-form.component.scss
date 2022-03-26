@@ -1,0 +1,209 @@
+.tradepair-spinner {
+    width: 100%;
+    padding: 100px 0;
+
+    .mat-progress-spinner {
+        margin: auto;
+    }
+}
+
+.tradepair-active-switch {
+    display: block;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.tradepair-field-title {
+    font-size: 13px;
+}
+
+.tradepair-field-reverse {
+    position: relative;
+}
+
+.tradepair-field-title-reverse {
+    position: relative;
+    display: inline-block;
+    font-size: 13px;
+    padding-left: 80px;
+}
+
+.tradepair-reverse-switch {
+    position: absolute;
+    display: block;
+    top: -2px;
+    left: 0;
+    width: 100px;
+    height: 24px;
+}
+
+.tradepair-inline-fields {
+    display: flex;
+    width: 100%;
+}
+
+.tradepair-inline-field {
+    flex: auto;
+
+    .tradepair-inline-field-inner {
+        padding-right: 20px;
+    }
+}
+
+.tradepair-inline-field:last-child {
+    .tradepair-inline-field-inner {
+        padding-right: 0;
+    }
+}
+
+.tradepair-inline-field-half {
+    flex: 0 0 50%;
+}
+
+.tradepair-inline-field-third {
+    flex: 0 0 33.3%;
+}
+
+.tradepair-inline-field .mat-form-field {
+    width: 100%;
+
+}
+
+.tradepair-full-field .mat-form-field {
+    width: 100%;
+}
+
+.mat-button-toggle-group {
+    width: 100%;
+}
+
+.mat-button-toggle {
+    flex: auto;
+}
+
+.mat-slider {
+    padding-top: 20px;
+    width: 100%;
+}
+
+.tradepair-slider-wrapper {
+    position: relative;
+    display: block;
+    height: 60px;
+    width: 100%;
+}
+
+.tradepair-slider-number1, .tradepair-slider-number2, .tradepair-slider-number {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.tradepair-slider-number1, .tradepair-slider-number2 {
+    position: absolute;
+    top: -6px;
+    color: #888;
+}
+
+.tradepair-slider-number1 {
+    left: 0;
+}
+
+.tradepair-slider-number2 {
+    right: 0;
+}
+
+.tradepair-slider-number {
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+}
+
+.tradepair-send {
+    padding: 40px 0;
+}
+
+.tradepair-title {
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.tradepair-title-item {
+    flex: 0 0 20%;
+    overflow: hidden;
+}
+
+.tradepair-title-item-green {
+    color: #33cc33;
+    text-align: right;
+}
+
+.tradepair-title-item-gray {
+    color: #888;
+    text-align: right;
+}
+
+.tradepair-title-item-acc {
+    display: inline-block;
+    width: 95%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #888;
+}
+
+.tradepair-sending {
+    position: relative;
+}
+
+.chip-image {
+    .mat-standard-chip {
+        min-height: 6em;
+    }
+}
+
+.tradepair-keimage-chip {
+    position: relative;
+    display: inline-block;
+    height: 6em;
+}
+
+.tradepair-keimage-text {
+    display: inline-block;
+    margin-top: 2.5em;
+    margin-left: 5em;
+}
+
+.tradepair-keimage-image {
+    position: absolute;
+    top: 1em;
+    left: 0;
+    width: 4em;
+    height: 4em;
+    background-color: green;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.tradepair-keimage-chip2 {
+    position: relative;
+    display: inline-block;
+    height: 3em;
+}
+
+.tradepair-keimage-text2 {
+    display: inline-block;
+    margin-left: 4.5em;
+}
+
+.tradepair-keimage-image2 {
+    position: absolute;
+    top: 0.2em;
+    left: 0;
+    width: 2.6em;
+    height: 2.6em;
+    background-color: green;
+    border-radius: 6px;
+    overflow: hidden;
+}

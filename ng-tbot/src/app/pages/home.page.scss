@@ -1,0 +1,39 @@
+.home-page {
+    margin-top: 30px;
+}
+
+.home-page-spinner {
+    width: 20%;
+    margin: auto;
+    margin-top: 100px;
+}
+
+.home-page-loadmore {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.home-page-empty {
+    margin-top: 50px;
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
+
+mat-panel-title {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.home-signal-column1 {
+    flex: 0 0 13.3%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.home-signal-column2 {
+    flex: 0 0 20%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

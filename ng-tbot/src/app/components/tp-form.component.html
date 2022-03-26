@@ -1,0 +1,243 @@
+<div class="trade-pair-form-container">
+    <mat-expansion-panel #expPanel (afterExpand)=onPanelOpen($event) (afterCollapse)="onPanelClose($event)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <div class="tradepair-title" *ngIf="sourcePair.pair_type">
+              <div class="tradepair-title-item"><strong>{{sourcePair.pair_type.name}}</strong></div>
+              <div class="tradepair-title-item">{{sourcePair.is_long ? 'LONG' : 'SHORT'}}</div>
+              <div *ngIf="sourcePair.sum != undefined && sourcePair.sum > 0" class="tradepair-title-item">
+                  <span>{{sourcePair.sum}} ед.</span>
+              </div>
+              <div *ngIf="sourcePair.sum_percent != undefined && sourcePair.sum_percent > 0" class="tradepair-title-item">
+                  <span>{{sourcePair.sum_percent}}% от депозита</span>
+              </div>
+              <div class="tradepair-title-item">
+                  <span class="tradepair-title-item-acc">{{accountsForTitle}}</span>
+              </div>
+              <div *ngIf="sourcePair.is_active" class="tradepair-title-item">
+                  <span class="tradepair-title-item-green">включено</span>
+              </div>
+              <div *ngIf="!sourcePair.is_active" class="tradepair-title-item">
+                  <span class="tradepair-title-item-gray">выключено</span>
+              </div>
+          </div>
+          <div class="tradepair-title" *ngIf="!sourcePair.pair_type">
+              <div class="tradepair-title-item">Создать пару</div>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+    <div class="tradepair-spinner" *ngIf="!isReady">
+        <mat-progress-spinner mode="indeterminate" color="primary"></mat-progress-spinner>
+    </div>
+
+    <ng-container *ngIf="isReady">
+        <form [formGroup]="form" novalidate (ngSubmit)="send()">
+          <div class="tradepair-active-switch">
+              <mat-slide-toggle class="float-right" color="primary" [checked]="form.controls.is_active.value" [disabled]="isSending" (toggleChange)="toggleActive()">
+              </mat-slide-toggle>
+          </div>
+
+          <div class="tradepair-inline-fields">
+              <div class="tradepair-inline-field tradepair-inline-field-third">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Торговая пара</p>
+                      <mat-form-field appearance="fill">
+                          <mat-select formControlName="pair_type" [compareWith]="compareFn">
+                              <mat-option>--</mat-option>
+                              <mat-option *ngFor="let pt of tradePairTypes" [value]="pt">
+                                  {{pt.name}}
+                              </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                  </div>
+              </div>
+
+              <div class="tradepair-inline-field tradepair-inline-field-third">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Тип сделки</p>
+                      <mat-button-toggle-group (change)="onToggleLongChange($event)">
+                          <mat-button-toggle value="true" [checked]="form.controls.is_long.value" [disabled]="pair.id > 0">Long</mat-button-toggle>
+                          <mat-button-toggle value="false" [checked]="!form.controls.is_long.value" [disabled]="pair.id > 0">Short</mat-button-toggle>
+                      </mat-button-toggle-group>
+                  </div>
+              </div>
+
+              <div class="tradepair-inline-field tradepair-inline-field-third">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Кредитное плечо</p>
+                      <div class="tradepair-slider-wrapper">
+                          <div class="tradepair-slider-number1">1X</div>
+                          <div class="tradepair-slider-number2">125X</div>
+                          <mat-slider min="1" max="125" color="primary" [value]="form.controls.leverage.value" (input)="onSliderChanged($event)"></mat-slider>
+                          <div class="tradepair-slider-number">{{ drawSliderValue() }}</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <br>
+
+          <div class="tradepair-inline-fields">
+              <div class="tradepair-inline-field tradepair-inline-field-third">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Тип обеспечения</p>
+                      <mat-button-toggle-group (change)="onToggleLongChange($event)">
+                          <mat-button-toggle value="true" [checked]="true" disabled="true">Кросс</mat-button-toggle>
+                          <mat-button-toggle value="false"  disabled="true">Изолированная</mat-button-toggle>
+                      </mat-button-toggle-group>
+                  </div>
+              </div>
+
+              <div class="tradepair-inline-field tradepair-inline-field-third">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Сумма сделки в {{coinName}}</p>
+                      <mat-form-field appearance="fill">
+                          <input matInput formControlName="sum" type="number" name="sum">
+                          <mat-error *ngIf="form.controls.sum.invalid">{{getErrorMessage('sum')}}</mat-error>
+                      </mat-form-field>
+                  </div>
+              </div>
+
+              <div class="tradepair-inline-field tradepair-inline-field-third">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Сумма сделки в %</p>
+                      <mat-form-field appearance="fill">
+                          <input matInput formControlName="sum_percent" type="number" name="sum_percent" min="0" max="100">
+                          <mat-error *ngIf="form.controls.sum_percent.invalid">{{getErrorMessage('sum_percent')}}</mat-error>
+                      </mat-form-field>
+                  </div>
+              </div>
+          </div>
+
+          <div class="tradepair-inline-fields">
+              <div class="tradepair-inline-field tradepair-inline-field-third">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Стоп-лосс при покупке (в %)</p>
+                      <mat-form-field appearance="fill">
+                          <input matInput formControlName="stop_loss_percent" type="number" name="stop_loss_percent" min="0" max="100">
+                          <mat-error *ngIf="form.controls.stop_loss_percent.invalid">{{getErrorMessage('stop_loss_percent')}}</mat-error>
+                      </mat-form-field>
+                  </div>
+              </div>
+
+              <div class="tradepair-inline-field tradepair-inline-field-third">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Безубыток при росте (в %)</p>
+                      <mat-form-field appearance="fill">
+                          <input matInput formControlName="on_rise_percent" type="number" name="on_rise_percent" min="0" max="100">
+                          <mat-error *ngIf="form.controls.on_rise_percent.invalid">{{getErrorMessage('on_rise_percent')}}</mat-error>
+                      </mat-form-field>
+                  </div>
+              </div>
+
+              <div class="tradepair-inline-field tradepair-inline-field-third">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Порог закрытия сделки (в %)</p>
+                      <mat-form-field appearance="fill">
+                          <input matInput formControlName="trade_stop_percent" type="number" name="trade_stop_percent" min="0" max="100">
+                          <mat-error *ngIf="form.controls.trade_stop_percent.invalid">{{getErrorMessage('trade_stop_percent')}}</mat-error>
+                      </mat-form-field>
+                  </div>
+              </div>
+          </div>
+
+          <div class="tradepair-inline-fields">
+              <div class="tradepair-inline-field tradepair-inline-field-half">
+                  <div class="tradepair-inline-field-inner">
+                      <p class="tradepair-field-title">Ключевые слова сигнала</p>
+                      <mat-form-field>
+                          <mat-chip-list #keywordsList aria-label="Aliases" formArrayName="key_words">
+                              <mat-chip *ngFor="let kw of keyWordsControl.value" [selectable]="false" [removable]="true" (removed)="removeKeyword(kw)">
+                                  {{kw}}
+                                  <mat-icon matChipRemove>cancel</mat-icon>
+                              </mat-chip>
+                              <input
+                                     [matChipInputFor]="keywordsList"
+                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                     [matChipInputAddOnBlur]="true"
+                                     (matChipInputTokenEnd)="addKeyword($event)">
+                          </mat-chip-list>
+                      </mat-form-field>
+                      <br>
+
+                  </div>
+              </div>
+
+              <div class="tradepair-inline-field tradepair-inline-field-half">
+                  <div class="tradepair-inline-field-inner chip-image">
+                      <p class="tradepair-field-title">Изображения сигнала</p>
+                      <mat-form-field>
+                          <mat-select formControlName="key_images" [compareWith]="compareFn" multiple>
+
+                              <mat-select-trigger>
+                                  <mat-chip-list #keywordsList>
+                                      <mat-chip *ngFor="let ki of keyImagesControl.value" [selectable]="false" [removable]="true" (removed)="removeKeyImage(ki)">
+                                          <div class="tradepair-keimage-chip">
+                                              <div class="tradepair-keimage-text">{{ki.image_name}}</div>
+                                              <img class="tradepair-keimage-image" src="{{ki.image_preview}}"/>
+                                          </div>
+                                          <mat-icon matChipRemove>cancel</mat-icon>
+                                      </mat-chip>
+                                  </mat-chip-list>
+                              </mat-select-trigger>
+
+                              <mat-option *ngFor="let ki of keyImages" [value]="ki">
+                                  <div class="tradepair-keimage-chip2">
+                                      <div class="tradepair-keimage-text2">{{ki.image_name}}</div>
+                                      <img class="tradepair-keimage-image2" src="{{ki.image_preview}}"/>
+                                  </div>
+                              </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                  </div>
+              </div>
+          </div>
+          <br>
+
+          <div class="tradepair-full-field">
+              <div class="tradepair-inline-field-inner">
+                  <p class="tradepair-field-title">Пара активна для аккаунтов</p>
+                  <mat-form-field>
+                      <mat-select formControlName="accounts" [compareWith]="compareFn" multiple>
+
+                          <mat-select-trigger>
+                              <mat-chip-list #keyimagesList>
+                                  <mat-chip *ngFor="let acc of accountsControl.value" [selectable]="false" [removable]="true" (removed)="removeAccount(acc)">
+                                      {{ acc.name }}
+                                      <mat-icon matChipRemove>cancel</mat-icon>
+                                  </mat-chip>
+                              </mat-chip-list>
+                          </mat-select-trigger>
+
+                          <mat-option *ngFor="let acc of accounts" [value]="acc">{{acc.name}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </div>
+          </div>
+          <br>
+
+          <div class="tradepair-field-reverse">
+              <div class="tradepair-field-title-reverse">Переход в <span>{{form.controls.is_long.value ? 'SHORT' : 'LONG' }}</span>
+                <div class="tradepair-reverse-switch">
+                    <mat-slide-toggle color="primary" [checked]="form.controls.can_reverse.value" [disabled]="isSending" (toggleChange)="toggleReverse()">
+                    </mat-slide-toggle>
+                </div>
+              </div>
+          </div>
+          <br>
+          <br>
+          <div class="tradepair-field-reverse">
+              <button mat-raised-button color="primary" type="button" [disabled]="isSending || !form.valid || (pair.id <= 0)" (click)=createSignal()>Cоздать сигнал для этой пары прямо сейчас</button>
+          </div>
+          <br>
+
+          <div class="tradepair-sending" *ngIf="isSending"><mat-progress-bar mode="buffer"></mat-progress-bar></div>
+          <div class="tradepair-send">
+              <button class="float-right" mat-raised-button color="primary" [disabled]="isSending || !form.valid">{{(pair.id > 0) ? 'Сохранить' : 'Создать'}}</button>
+              <button *ngIf="pair.id > 0" class="float-left" mat-raised-button color="warn" type="button" [disabled]="isSending" (click)=deletePair()>Удалить</button>
+          </div>
+        </form>
+    </ng-container>
+
+  </mat-expansion-panel>
+</div>

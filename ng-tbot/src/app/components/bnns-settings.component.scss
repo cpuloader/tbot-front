@@ -1,0 +1,78 @@
+.bnns-settings-component {
+}
+
+.bnns-settings-list {
+    position: relative;
+}
+
+.bnns-settings-acc {
+    position: relative;
+    display: block;
+    padding-right: 200px;
+    margin-bottom: 15px;
+}
+
+.bnns-settings-acc-data {
+    position: relative;
+    display: flex;
+}
+
+.bnns-settings-acc-buttons {
+    position: absolute;
+    display: flex;
+    top: 20px;
+    right: 0;
+    width: 200px;
+    justify-content: flex-end;
+}
+
+.bnns-settings-acc-button {
+    flex: 0 0 70px;
+    height: 70px;
+
+    .mat-slide-toggle {
+        margin-top: 10px;
+    }
+}
+
+.bnns-settings-acc-button-test {
+    .mat-mini-fab.mat-accent {
+        background-color: green;
+    }
+}
+
+.bnns-settings-acc-line {
+    flex: 0 0 30%;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.bnns-settings-acc-name {
+    color: #888;
+}
+
+.bnns-settings-acc-err {
+    color: #f44336;
+}
+
+.bnns-settings-acc-assets {
+    display: block;
+
+    table {
+        width: 60%;
+        margin-left: 30%;
+    }
+}
+
+.bnns-settings-acc-assets-empty {
+    display: block;
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    font-style: italic;
+    color: #888;
+}
+
+.bnns-settings-sending {
+    position: relative;
+}
